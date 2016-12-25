@@ -1,9 +1,9 @@
 //============================================================================
-// Name        : test.cpp
+// Name        : get_local_ip.cpp
 // Author      : xxl
 // Version     :
 // Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
+// Description : 
 //============================================================================
 
 #include <iostream>
@@ -28,11 +28,12 @@ int main() {
 
 	ifconf conf;
 	ifreq * reqs;
-	int numIfreq = 10;
+	int numIfreqRequested = 10;
+	int numIfreqGetted = 0;
 	do {
-		reqs = new ifreq[numIfreq];
+		reqs = new ifreq[numIfreqRequested];
 		conf.ifc_ifcu.ifcu_req = reqs;
-		conf.ifc_len = sizeof(ifreq) * numIfreq;
+		conf.ifc_len = sizeof(ifreq) * numIfreqRequested;
 		if(ioctl(sockfd,SIOCGIFCONF,&conf) < 0) {
 			if(errno != EINVAL) {
 				perror("ioctl");
@@ -40,20 +41,21 @@ int main() {
 				return -1;
 			}
 		}
-		if(conf.ifc_len < numIfreq && errno != EINVAL) {
-			cout<<conf.ifc_len<<" ifreq getted."<<endl;
+		numIfreqGetted = conf.ifc_len / sizeof(ifreq);
+		if(numIfreqGetted < numIfreqRequested && errno != EINVAL) {
+			cout<<numIfreqGetted<<" ifreq getted."<<endl;
 			break;
 		}
 		else {
 			delete [] reqs;
-			numIfreq += IF_REQ_INCREMENT;
-			cout<<"ifreq buffer is too small,increased to "<<numIfreq<<endl;
+			numIfreqRequested += IF_REQ_INCREMENT;
+			cout<<"ifreq buffer is too small,increased to "<<numIfreqRequested<<endl;
 		}
 
 	} while(true);
 
 	sockaddr_in * ipv4Address;
-	for(int i=0;i<conf.ifc_len;++i) {
+	for(int i=0;i<numIfreqGetted;++i) {
 		ifreq & currentReq(reqs[i]);
 		ipv4Address = (sockaddr_in *)(&currentReq.ifr_ifru.ifru_addr);
 		cout<<currentReq.ifr_ifrn.ifrn_name<<':'<<inet_ntoa(ipv4Address->sin_addr)<<endl;
