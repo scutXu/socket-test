@@ -19,4 +19,6 @@ void Connect(int sockfd,const sockaddr * servAddr,size_t addrSize);
 void Bind(int listenfd,const sockaddr * servAddr,size_t addrSize);
 void Listen(int listenfd,int n);
 int Accept(int listenfd,sockaddr * cliAddr,size_t * cliAddrSize);
+ssize_t Read(int fd,void * buf,size_t nbytes);
+ssize_t Write(int fd,const void * buf,size_t nbytes);
 void loop(int sockfd);

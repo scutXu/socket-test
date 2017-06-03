@@ -19,7 +19,7 @@ int main() {
 	int connfd = Accept(listenfd,(sockaddr *)(&cliAddr),&cliAddrSize);
 
 
-	close(connfd);
+	loop(connfd);
 	close(listenfd);
 	
 	return 0;

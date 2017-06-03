@@ -1,5 +1,6 @@
 #include "common.h"
 
+#define READ_BUF 1024
 
 int Socket(int domain, int type, int protocol)
 {
@@ -65,22 +66,54 @@ int Accept(int listenfd,sockaddr * cliAddr,size_t * cliAddrSize)
 	return connfd;
 }
 
+ssize_t Read(int fd,void * buf,size_t nbytes)
+{
+	ssize_t n = read(fd,buf,nbytes);
+	if(n < 0) {
+		perror("read");
+		exit(1);
+	}
+	return n;
+}
+ssize_t Write(int fd,const void * buf,size_t nbytes)
+{
+	ssize_t n = write(fd,buf,nbytes);
+	if(n < 0) {
+		perror("write");
+		exit(1);
+	}
+	return n;
+}
+
 void loop(int sockfd)
 {
 	char order;
+	char writeBuf[6] = "hello";
+	char readBuf[READ_BUF];
+	memset(readBuf,0,READ_BUF);
+
 	while(true) {
 		cin>>order;
 		if(order == 'c') {
-			break;
+			close(sockfd);
+			return;
 		}
 
 		switch(order) {
 			case 'r':
 			{
+				ssize_t n = Read(sockfd,(void *)readBuf,READ_BUF);
+				if(n == 0) {
+					close(sockfd);
+					return;
+				}
+				cout<<readBuf;
+				memset(readBuf,0,READ_BUF);
 				break;
 			}
 			case 'w':
 			{
+				Write(sockfd,(const void *)writeBuf,sizeof(writeBuf));
 				break;
 			}
 			default:
