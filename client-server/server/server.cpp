@@ -19,15 +19,17 @@ int main() {
 	int connfd = Accept(listenfd,(sockaddr *)(&cliAddr),&cliAddrSize);
 
 	int a;
-	cin>>a;
-	cout<<"start close conn sock"<<endl;
-	close(connfd);
-	cout<<"finish close conn sock"<<endl;
 
 	cin>>a;
-	cout<<"start close listen sock"<<endl;
+	shutdown(connfd,SHUT_RDWR);
+
+
+	cin>>a;
+	close(connfd);
+
+
+	cin>>a;
 	close(listenfd);
-	cout<<"finish close listen sock"<<endl;
 	
 	return 0;
 }

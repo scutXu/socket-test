@@ -14,6 +14,12 @@ int main()
 
 	int a;
 	cin>>a;
+
+	char buf[1];
+	Write(sockfd,(const void *)buf,1);
+
+	cin>>a;
+
 	cout<<"start close client sock"<<endl;
 	close(sockfd);
 	cout<<"finish close client sock<"<<endl;
