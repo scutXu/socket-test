@@ -10,5 +10,11 @@ int main()
 	sockaddr_in servAddr;
 	set_sock_addr(&servAddr,AF_INET,SERV_PORT,INADDR_LOOPBACK);
 	Connect(sockfd,(const sockaddr *)(&servAddr),sizeof(servAddr));
-	loop(sockfd);
+
+
+	int a;
+	cin>>a;
+	cout<<"start close client sock"<<endl;
+	close(sockfd);
+	cout<<"finish close client sock<"<<endl;
 }

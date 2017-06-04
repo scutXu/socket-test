@@ -18,9 +18,16 @@ int main() {
 	size_t cliAddrSize = sizeof(cliAddr);
 	int connfd = Accept(listenfd,(sockaddr *)(&cliAddr),&cliAddrSize);
 
+	int a;
+	cin>>a;
+	cout<<"start close conn sock"<<endl;
+	close(connfd);
+	cout<<"finish close conn sock"<<endl;
 
-	loop(connfd);
+	cin>>a;
+	cout<<"start close listen sock"<<endl;
 	close(listenfd);
+	cout<<"finish close listen sock"<<endl;
 	
 	return 0;
 }

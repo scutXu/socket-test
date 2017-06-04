@@ -87,7 +87,7 @@ ssize_t Write(int fd,const void * buf,size_t nbytes)
 
 void loop(int sockfd)
 {
-	char order;
+	/*char order;
 	char writeBuf[6] = "hello";
 	char readBuf[READ_BUF];
 	memset(readBuf,0,READ_BUF);
@@ -119,5 +119,5 @@ void loop(int sockfd)
 			default:
 				break;
 		}
-	}
+	}*/
 }
